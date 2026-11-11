@@ -22,7 +22,7 @@ export default function (Glide, Components, Events) {
    *
    * @type {Array}
    */
-  let TRANSFORMERS = [
+  const TRANSFORMERS = [
     Gap,
     Grow,
     Peeking,
@@ -37,8 +37,8 @@ export default function (Glide, Components, Events) {
      * @return {Number}
      */
     mutate (translate) {
-      for (var i = 0; i < TRANSFORMERS.length; i++) {
-        let transformer = TRANSFORMERS[i]
+      for (let i = 0; i < TRANSFORMERS.length; i++) {
+        const transformer = TRANSFORMERS[i]
 
         if (isFunction(transformer) && isFunction(transformer().modify)) {
           translate = transformer(Glide, Components, Events).modify(translate)

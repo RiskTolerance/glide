@@ -83,7 +83,7 @@ export default function (Glide, Components, Events) {
      * @return {Void}
      */
     remove () {
-      let { items } = this
+      const { items } = this
 
       for (let i = 0; i < items.length; i++) {
         Components.Html.wrapper.removeChild(items[i])

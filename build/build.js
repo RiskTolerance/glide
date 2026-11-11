@@ -1,4 +1,4 @@
-import banner from './banner'
+import banner from './banner.js'
 import babel from '@rollup/plugin-babel'
 
 export default {

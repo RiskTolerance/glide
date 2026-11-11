@@ -12,7 +12,7 @@ describe("Event's callbacks on", () => {
   test('passed as array should be called only once', () => {
     const glide = new Glide('#glide')
 
-    let callback = jest.fn()
+    const callback = jest.fn()
 
     glide.on(['mount.before'], callback)
 
@@ -24,8 +24,8 @@ describe("Event's callbacks on", () => {
   test('`mount.*` should be called', () => {
     const glide = new Glide('#glide')
 
-    let beforeCallback = jest.fn()
-    let afterCallback = jest.fn()
+    const beforeCallback = jest.fn()
+    const afterCallback = jest.fn()
 
     glide.on('mount.before', beforeCallback)
     glide.on('mount.after', afterCallback)
@@ -39,7 +39,7 @@ describe("Event's callbacks on", () => {
   test('`update` should be called', () => {
     const glide = new Glide('#glide')
 
-    let updateCallback = jest.fn()
+    const updateCallback = jest.fn()
 
     glide.on('update', updateCallback)
 
@@ -51,7 +51,7 @@ describe("Event's callbacks on", () => {
   test('`play` should be called', () => {
     const glide = new Glide('#glide')
 
-    let playCallback = jest.fn()
+    const playCallback = jest.fn()
 
     glide.on('play', playCallback)
 
@@ -63,7 +63,7 @@ describe("Event's callbacks on", () => {
   test('`pause` should be called', () => {
     const glide = new Glide('#glide')
 
-    let pauseCallback = jest.fn()
+    const pauseCallback = jest.fn()
 
     glide.on('pause', pauseCallback)
 
@@ -75,8 +75,8 @@ describe("Event's callbacks on", () => {
   test('`build.*` should be called', () => {
     const glide = new Glide('#glide')
 
-    let beforeCallback = jest.fn()
-    let afterCallback = jest.fn()
+    const beforeCallback = jest.fn()
+    const afterCallback = jest.fn()
 
     glide.on('build.before', beforeCallback)
     glide.on('build.after', afterCallback)
@@ -90,42 +90,42 @@ describe("Event's callbacks on", () => {
   test('`run` should be called with `move` parameter', () => {
     const glide = new Glide('#glide')
 
-    let move = { direction: '=', steps: 1 }
-    let runCallback = jest.fn()
+    const move = { direction: '=', steps: 1 }
+    const runCallback = jest.fn()
 
     glide.on('run', runCallback)
 
     glide.mount().go('=1')
 
-    expect(runCallback).toBeCalledWith(move)
+    expect(runCallback).toHaveBeenCalledWith(move)
   })
 
   test('`run.before` should be called with `move` parameter', () => {
     const glide = new Glide('#glide')
 
-    let move = { direction: '=', steps: 1 }
-    let beforeCallback = jest.fn()
+    const move = { direction: '=', steps: 1 }
+    const beforeCallback = jest.fn()
 
     glide.on('run.before', beforeCallback)
 
     glide.mount().go('=1')
 
-    expect(beforeCallback).toBeCalledWith(move)
+    expect(beforeCallback).toHaveBeenCalledWith(move)
   })
 
   test('`run.after` should be called with `move` parameter', (done) => {
     const glide = new Glide('#glide')
 
-    let move = { direction: '=', steps: 1 }
-    let afterCallback = jest.fn()
+    const move = { direction: '=', steps: 1 }
+    const afterCallback = jest.fn()
 
     glide.on('run.after', afterCallback)
 
     glide.mount().go('=1')
 
-    expect(afterCallback).not.toBeCalled()
+    expect(afterCallback).not.toHaveBeenCalled()
     afterTransition(() => {
-      expect(afterCallback).toBeCalledWith(move)
+      expect(afterCallback).toHaveBeenCalledWith(move)
 
       done()
     })
@@ -134,16 +134,16 @@ describe("Event's callbacks on", () => {
   test('`run.offset` should be called with `move` parameter when changing slide from first to the last one', (done) => {
     const glide = new Glide('#glide', { startAt: 0 })
 
-    let move = { direction: '<', steps: 0 }
-    let offsetCallback = jest.fn()
+    const move = { direction: '<', steps: 0 }
+    const offsetCallback = jest.fn()
 
     glide.on('run.offset', offsetCallback)
 
     glide.mount().go('<')
 
-    expect(offsetCallback).not.toBeCalled()
+    expect(offsetCallback).not.toHaveBeenCalled()
     afterRewindTransition(() => {
-      expect(offsetCallback).toBeCalledWith(move)
+      expect(offsetCallback).toHaveBeenCalledWith(move)
 
       done()
     })
@@ -153,16 +153,16 @@ describe("Event's callbacks on", () => {
     const { slides } = query(document)
     const glide = new Glide('#glide', { startAt: slides.length - 1 })
 
-    let move = { direction: '>', steps: 0 }
-    let offsetCallback = jest.fn()
+    const move = { direction: '>', steps: 0 }
+    const offsetCallback = jest.fn()
 
     glide.on('run.offset', offsetCallback)
 
     glide.mount().go('>')
 
-    expect(offsetCallback).not.toBeCalled()
+    expect(offsetCallback).not.toHaveBeenCalled()
     afterRewindTransition(() => {
-      expect(offsetCallback).toBeCalledWith(move)
+      expect(offsetCallback).toHaveBeenCalledWith(move)
 
       done()
     })
@@ -171,16 +171,16 @@ describe("Event's callbacks on", () => {
   test('`run.start` should be called with `move` parameter when changing to the first slide', (done) => {
     const glide = new Glide('#glide', { startAt: 1 })
 
-    let move = { direction: '<', steps: '<' }
-    let startCallback = jest.fn()
+    const move = { direction: '<', steps: '<' }
+    const startCallback = jest.fn()
 
     glide.on('run.start', startCallback)
 
     glide.mount().go('<<')
 
-    expect(startCallback).not.toBeCalled()
+    expect(startCallback).not.toHaveBeenCalled()
     afterTransition(() => {
-      expect(startCallback).toBeCalledWith(move)
+      expect(startCallback).toHaveBeenCalledWith(move)
 
       done()
     })
@@ -189,16 +189,16 @@ describe("Event's callbacks on", () => {
   test('`run.end` should be called with `move` parameter when changing to the first slide', (done) => {
     const glide = new Glide('#glide', { startAt: 1 })
 
-    let move = { direction: '>', steps: '>' }
-    let endCallback = jest.fn()
+    const move = { direction: '>', steps: '>' }
+    const endCallback = jest.fn()
 
     glide.on('run.end', endCallback)
 
     glide.mount().go('>>')
 
-    expect(endCallback).not.toBeCalled()
+    expect(endCallback).not.toHaveBeenCalled()
     afterTransition(() => {
-      expect(endCallback).toBeCalledWith(move)
+      expect(endCallback).toHaveBeenCalledWith(move)
 
       done()
     })
@@ -207,13 +207,13 @@ describe("Event's callbacks on", () => {
   test('`autoplay` should be called on each autoplay slide change', (done) => {
     const glide = new Glide('#glide', { autoplay: 50 })
 
-    let autoplayCallback = jest.fn()
+    const autoplayCallback = jest.fn()
 
     glide.on('autoplay', autoplayCallback)
 
     glide.mount()
 
-    expect(autoplayCallback).not.toBeCalled()
+    expect(autoplayCallback).not.toHaveBeenCalled()
     setTimeout(() => {
       expect(autoplayCallback).toHaveBeenCalledTimes(2)
 
@@ -224,15 +224,15 @@ describe("Event's callbacks on", () => {
   test('`translate.jump` should be called when making a loop change', (done) => {
     const glide = new Glide('#glide', { type: 'carousel' })
 
-    let jumpCallback = jest.fn()
+    const jumpCallback = jest.fn()
 
     glide.on('translate.jump', jumpCallback)
 
     glide.mount().go('<')
 
-    expect(jumpCallback).not.toBeCalled()
+    expect(jumpCallback).not.toHaveBeenCalled()
     afterTransition(() => {
-      expect(jumpCallback).toBeCalled()
+      expect(jumpCallback).toHaveBeenCalled()
 
       done()
     })
@@ -242,15 +242,15 @@ describe("Event's callbacks on", () => {
     const { slides } = query(document)
     const glide = new Glide('#glide', { type: 'carousel', startAt: slides.length - 1 })
 
-    let jumpCallback = jest.fn()
+    const jumpCallback = jest.fn()
 
     glide.on('translate.jump', jumpCallback)
 
     glide.mount().go('>')
 
-    expect(jumpCallback).not.toBeCalled()
+    expect(jumpCallback).not.toHaveBeenCalled()
     afterTransition(() => {
-      expect(jumpCallback).toBeCalled()
+      expect(jumpCallback).toHaveBeenCalled()
 
       done()
     })

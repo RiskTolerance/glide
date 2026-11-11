@@ -2,7 +2,7 @@ import { define, mergeOptions } from '../../src/utils/object'
 
 describe('Function', () => {
   test('`define` should create object getters and setters', () => {
-    let obj = {}
+    const obj = {}
 
     expect(typeof obj.property).toBe('undefined')
 
@@ -22,7 +22,7 @@ describe('Function', () => {
   })
 
   test('`mergeOptions` should merge defaults and options object', () => {
-    let obj = mergeOptions(
+    const obj = mergeOptions(
       {
         a: 1,
         b: 2
@@ -39,7 +39,7 @@ describe('Function', () => {
   })
 
   test('`mergeOptions` should deep merge classes options object', () => {
-    let obj = mergeOptions(
+    const obj = mergeOptions(
       {
         classes: {
           direction: {

@@ -1,4 +1,4 @@
-const data = require('../package.json')
+import data from '../package.json' with { type: 'json' }
 
 export default `/*!
  * Glide.js v${data.version}

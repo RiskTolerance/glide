@@ -1,5 +1,5 @@
 import { warn } from '../utils/log'
-import { exist, toArray } from '../utils/dom'
+import { toArray } from '../utils/dom'
 import { define } from '../utils/object'
 import { isString } from '../utils/unit'
 
@@ -72,7 +72,7 @@ export default function (Glide, Components, Events) {
      * @return {Object}
      */
     set (t) {
-        Html._t = t
+      Html._t = t
     }
   })
 

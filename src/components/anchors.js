@@ -86,7 +86,7 @@ export default function (Glide, Components, Events) {
       prevented = true
 
       if (!detached) {
-        for (var i = 0; i < this.items.length; i++) {
+        for (let i = 0; i < this.items.length; i++) {
           this.items[i].draggable = false
         }
 
@@ -105,7 +105,7 @@ export default function (Glide, Components, Events) {
       prevented = false
 
       if (detached) {
-        for (var i = 0; i < this.items.length; i++) {
+        for (let i = 0; i < this.items.length; i++) {
           this.items[i].draggable = true
         }
 

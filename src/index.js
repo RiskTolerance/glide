@@ -69,7 +69,7 @@ export default class Glide {
   update (settings = {}) {
     this.settings = mergeOptions(this.settings, settings)
 
-    if (settings.hasOwnProperty('startAt')) {
+    if (Object.prototype.hasOwnProperty.call(settings, 'startAt')) {
       this.index = settings.startAt
     }
 

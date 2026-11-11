@@ -11,15 +11,15 @@ describe('Glide initialized as `slider`', () => {
   })
 
   test('should have a correct type', () => {
-    let glide = new Glide('#glide').mount()
+    const glide = new Glide('#glide').mount()
 
     expect(glide.isType('slider')).toBe(true)
   })
 
   test('should move to the last slide when we are on the first slide and moving backward', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0 }).mount()
+    const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('<')
 
@@ -32,9 +32,9 @@ describe('Glide initialized as `slider`', () => {
   })
 
   test('should move to the first slide when we are on the last slide and moving forward', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: slides.length - 1 }).mount()
+    const glide = new Glide('#glide', { startAt: slides.length - 1 }).mount()
 
     glide.go('>')
 
@@ -47,9 +47,9 @@ describe('Glide initialized as `slider`', () => {
   })
 
   test('should NOT move to the last slide when we are on the first slide and rewind set to false', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0, rewind: false }).mount()
+    const glide = new Glide('#glide', { startAt: 0, rewind: false }).mount()
 
     glide.go('<')
 
@@ -62,9 +62,9 @@ describe('Glide initialized as `slider`', () => {
   })
 
   test('should NOT move to the first slide when we are on the last slide and rewind set to false', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: slides.length - 1, rewind: false }).mount()
+    const glide = new Glide('#glide', { startAt: slides.length - 1, rewind: false }).mount()
 
     glide.go('>')
 
@@ -77,11 +77,11 @@ describe('Glide initialized as `slider`', () => {
   })
 
   test('should STOP move at `perView` number of slides from the end when `bound` option is `true`', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let perView = 3
+    const perView = 3
 
-    let glide = new Glide('#glide', { perView: perView, bound: true }).mount()
+    const glide = new Glide('#glide', { perView, bound: true }).mount()
 
     glide.go('>>')
 

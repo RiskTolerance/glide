@@ -11,8 +11,8 @@ describe('Calling `go()` method with', () => {
   })
 
   test('invalid direction pattern should result in `warn()` message', (done) => {
-    let glide = new Glide('#glide')
-    let fn = jest.fn()
+    const glide = new Glide('#glide')
+    const fn = jest.fn()
 
     global.console = { error: fn }
 
@@ -26,9 +26,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('go() should wait for transition end', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0 }).mount()
+    const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('>')
     glide.go('>')
@@ -42,9 +42,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('go() should not wait for transition when configured', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0, waitForTransition: false }).mount()
+    const glide = new Glide('#glide', { startAt: 0, waitForTransition: false }).mount()
 
     glide.go('>')
     glide.go('>')
@@ -58,9 +58,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`>` should move one slide forward', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0 }).mount()
+    const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('>')
 
@@ -72,9 +72,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`<` should move one slide backward', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 1 }).mount()
+    const glide = new Glide('#glide', { startAt: 1 }).mount()
 
     glide.go('<')
 
@@ -86,9 +86,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`>>` should rewind to the last slide', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0 }).mount()
+    const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('>>')
 
@@ -100,9 +100,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`<<` should rewind to the first slide', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: slides.length - 1 }).mount()
+    const glide = new Glide('#glide', { startAt: slides.length - 1 }).mount()
 
     glide.go('<<')
 
@@ -114,9 +114,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`={i}` should move to specified slide', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0 }).mount()
+    const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('=2')
 
@@ -128,9 +128,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|>` should go to the next viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 0, perView: 3 }).mount()
+    const glide = new Glide('#glide', { startAt: 0, perView: 3 }).mount()
 
     glide.go('|>')
 
@@ -142,9 +142,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|>` should go to the next viewport when active slide is not first on current viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 1, perView: 3 }).mount()
+    const glide = new Glide('#glide', { startAt: 1, perView: 3 }).mount()
 
     glide.go('|>')
 
@@ -156,9 +156,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|<` should go to the previous viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 3, perView: 3 }).mount()
+    const glide = new Glide('#glide', { startAt: 3, perView: 3 }).mount()
 
     glide.go('|<')
 
@@ -170,9 +170,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|<` should go to the previous viewport when active slide is not first on current viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', { startAt: 3, perView: 3 }).mount()
+    const glide = new Glide('#glide', { startAt: 3, perView: 3 }).mount()
 
     glide.go('|<')
 
@@ -184,9 +184,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|>` should not change viewport when rewind is disabled, moving forward and we on the last viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', {
+    const glide = new Glide('#glide', {
       startAt: slides.length - 1,
       perView: 3,
       rewind: false
@@ -202,9 +202,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|<` should not change viewport when rewind is disabled, moving backward and we on the first viewport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', {
+    const glide = new Glide('#glide', {
       startAt: 0,
       perView: 3,
       rewind: false
@@ -220,9 +220,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|>` should change to the first viewport when moving forward and we are on the last vievport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', {
+    const glide = new Glide('#glide', {
       startAt: slides.length - 1,
       perView: 3
     }).mount()
@@ -237,9 +237,9 @@ describe('Calling `go()` method with', () => {
   })
 
   test('`|<` should change to the last viewport when moving backward and we are on the first vievport', (done) => {
-    let { slides } = query(document)
+    const { slides } = query(document)
 
-    let glide = new Glide('#glide', {
+    const glide = new Glide('#glide', {
       startAt: 0,
       perView: 3
     }).mount()

@@ -11,9 +11,9 @@ import { isFunction } from '../utils/unit'
  * @returns {Object}
  */
 export function mount (glide, extensions, events) {
-  let components = {}
+  const components = {}
 
-  for (let name in extensions) {
+  for (const name in extensions) {
     if (isFunction(extensions[name])) {
       components[name] = extensions[name](glide, components, events)
     } else {
@@ -21,7 +21,7 @@ export function mount (glide, extensions, events) {
     }
   }
 
-  for (let name in components) {
+  for (const name in components) {
     if (isFunction(components[name].mount)) {
       components[name].mount()
     }

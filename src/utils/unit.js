@@ -39,9 +39,9 @@ export function isString (value) {
  * @see https://github.com/jashkenas/underscore
  */
 export function isObject (value) {
-  let type = typeof value
+  const type = typeof value
 
-  return type === 'function' || type === 'object' && !!value // eslint-disable-line no-mixed-operators
+  return type === 'function' || (type === 'object' && !!value)
 }
 
 /**

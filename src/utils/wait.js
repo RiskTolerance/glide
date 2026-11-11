@@ -23,9 +23,9 @@ export function throttle (func, wait, options = {}) {
   }
 
   const throttled = function () {
-    let at = now()
+    const at = now()
     if (!previous && options.leading === false) previous = at
-    let remaining = wait - (at - previous)
+    const remaining = wait - (at - previous)
     context = this
     args = arguments
     if (remaining <= 0 || remaining > wait) {
