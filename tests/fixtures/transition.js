@@ -1,9 +1,13 @@
 import defaults from '../../src/defaults'
 
-export function afterTransition (callback) {
-  setTimeout(callback, defaults.animationDuration + 10)
+export function sleep (ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export function afterRewindTransition (callback) {
-  setTimeout(callback, defaults.rewindDuration + 10)
+export function afterTransition () {
+  return sleep(defaults.animationDuration + 10)
+}
+
+export function afterRewindTransition () {
+  return sleep(defaults.rewindDuration + 10)
 }

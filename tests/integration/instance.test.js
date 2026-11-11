@@ -62,7 +62,7 @@ describe('Glide', () => {
   })
 
   test('should initialize extensions specified at mounting', () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
     const stub = () => {
       return { mount: fn }
     }
@@ -73,7 +73,7 @@ describe('Glide', () => {
   })
 
   test('should warn about invalid extensions', () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
     const stub = { mount () {} }
 
     console.error = fn

@@ -78,13 +78,16 @@ The issue channel is especially for improvement proposals and bug reporting. If 
 
 ## Browser Support
 
- - IE 11+
- - Edge
- - Chrome 10+
- - Firefox 10+
- - Opera 15+
- - Safari 5.1+
- - Safari iOS 9+
+Distributed builds target ES2015, so any browser with full ES2015 support works:
+
+ - Chrome 51+
+ - Edge 15+
+ - Firefox 54+
+ - Opera 38+
+ - Safari 10+
+ - Safari iOS 10+
+
+Internet Explorer is not supported.
 
 ## Building
 

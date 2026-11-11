@@ -4,9 +4,9 @@ describe('`mount()` function should', () => {
   test('initialize all registered components', () => {
     // Here we creating a mock of glide internal component.
     // Every component have to implement a `mount()` method and be a function
-    const fn = jest.fn()
+    const fn = vi.fn()
     const stub = { mount: fn }
-    const mock = jest.fn(() => {
+    const mock = vi.fn(() => {
       return stub
     })
 

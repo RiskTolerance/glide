@@ -2,7 +2,7 @@ import EventsBinder from '../../src/core/event/events-binder'
 
 let events = null
 let element = null
-const callback = jest.fn()
+const callback = vi.fn()
 
 describe('EventsBinder should', () => {
   beforeEach(() => {
@@ -15,8 +15,8 @@ describe('EventsBinder should', () => {
   })
 
   test('create and remove event listener from element', () => {
-    const addFn = jest.fn()
-    const rmFn = jest.fn()
+    const addFn = vi.fn()
+    const rmFn = vi.fn()
 
     element.addEventListener = addFn
     element.removeEventListener = rmFn

@@ -42,19 +42,17 @@ describe('Class', () => {
     expect(slides[2].classList.contains(defaults.classes.slide.active)).toBe(true)
   })
 
-  test('`classes.slide.active` should be applied to the new slide element after moving', (done) => {
+  test('`classes.slide.active` should be applied to the new slide element after moving', async () => {
     const { slides } = query(document)
 
     const glide = new Glide('#glide', { startAt: 0 }).mount()
 
     glide.go('>')
 
-    afterTransition(() => {
-      expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
-      expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    await afterTransition()
 
-      done()
-    })
+    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
+    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
   })
 
   test('`classes.swipeable` should be applied on the root element', () => {

@@ -1,6 +1,6 @@
 import html from '../fixtures/html'
 import { query } from '../fixtures/query'
-import { afterTransition, afterRewindTransition } from '../fixtures/transition'
+import { afterTransition, afterRewindTransition, sleep } from '../fixtures/transition'
 
 import Glide from '../../entry/entry-complete'
 
@@ -12,7 +12,7 @@ describe("Event's callbacks on", () => {
   test('passed as array should be called only once', () => {
     const glide = new Glide('#glide')
 
-    const callback = jest.fn()
+    const callback = vi.fn()
 
     glide.on(['mount.before'], callback)
 
@@ -24,8 +24,8 @@ describe("Event's callbacks on", () => {
   test('`mount.*` should be called', () => {
     const glide = new Glide('#glide')
 
-    const beforeCallback = jest.fn()
-    const afterCallback = jest.fn()
+    const beforeCallback = vi.fn()
+    const afterCallback = vi.fn()
 
     glide.on('mount.before', beforeCallback)
     glide.on('mount.after', afterCallback)
@@ -39,7 +39,7 @@ describe("Event's callbacks on", () => {
   test('`update` should be called', () => {
     const glide = new Glide('#glide')
 
-    const updateCallback = jest.fn()
+    const updateCallback = vi.fn()
 
     glide.on('update', updateCallback)
 
@@ -51,7 +51,7 @@ describe("Event's callbacks on", () => {
   test('`play` should be called', () => {
     const glide = new Glide('#glide')
 
-    const playCallback = jest.fn()
+    const playCallback = vi.fn()
 
     glide.on('play', playCallback)
 
@@ -63,7 +63,7 @@ describe("Event's callbacks on", () => {
   test('`pause` should be called', () => {
     const glide = new Glide('#glide')
 
-    const pauseCallback = jest.fn()
+    const pauseCallback = vi.fn()
 
     glide.on('pause', pauseCallback)
 
@@ -75,8 +75,8 @@ describe("Event's callbacks on", () => {
   test('`build.*` should be called', () => {
     const glide = new Glide('#glide')
 
-    const beforeCallback = jest.fn()
-    const afterCallback = jest.fn()
+    const beforeCallback = vi.fn()
+    const afterCallback = vi.fn()
 
     glide.on('build.before', beforeCallback)
     glide.on('build.after', afterCallback)
@@ -91,7 +91,7 @@ describe("Event's callbacks on", () => {
     const glide = new Glide('#glide')
 
     const move = { direction: '=', steps: 1 }
-    const runCallback = jest.fn()
+    const runCallback = vi.fn()
 
     glide.on('run', runCallback)
 
@@ -104,7 +104,7 @@ describe("Event's callbacks on", () => {
     const glide = new Glide('#glide')
 
     const move = { direction: '=', steps: 1 }
-    const beforeCallback = jest.fn()
+    const beforeCallback = vi.fn()
 
     glide.on('run.before', beforeCallback)
 
@@ -113,146 +113,130 @@ describe("Event's callbacks on", () => {
     expect(beforeCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`run.after` should be called with `move` parameter', (done) => {
+  test('`run.after` should be called with `move` parameter', async () => {
     const glide = new Glide('#glide')
 
     const move = { direction: '=', steps: 1 }
-    const afterCallback = jest.fn()
+    const afterCallback = vi.fn()
 
     glide.on('run.after', afterCallback)
 
     glide.mount().go('=1')
 
     expect(afterCallback).not.toHaveBeenCalled()
-    afterTransition(() => {
-      expect(afterCallback).toHaveBeenCalledWith(move)
+    await afterTransition()
 
-      done()
-    })
+    expect(afterCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`run.offset` should be called with `move` parameter when changing slide from first to the last one', (done) => {
+  test('`run.offset` should be called with `move` parameter when changing slide from first to the last one', async () => {
     const glide = new Glide('#glide', { startAt: 0 })
 
     const move = { direction: '<', steps: 0 }
-    const offsetCallback = jest.fn()
+    const offsetCallback = vi.fn()
 
     glide.on('run.offset', offsetCallback)
 
     glide.mount().go('<')
 
     expect(offsetCallback).not.toHaveBeenCalled()
-    afterRewindTransition(() => {
-      expect(offsetCallback).toHaveBeenCalledWith(move)
+    await afterRewindTransition()
 
-      done()
-    })
+    expect(offsetCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`run.offset` should be called with `move` parameter when changing slide from last to the first one', (done) => {
+  test('`run.offset` should be called with `move` parameter when changing slide from last to the first one', async () => {
     const { slides } = query(document)
     const glide = new Glide('#glide', { startAt: slides.length - 1 })
 
     const move = { direction: '>', steps: 0 }
-    const offsetCallback = jest.fn()
+    const offsetCallback = vi.fn()
 
     glide.on('run.offset', offsetCallback)
 
     glide.mount().go('>')
 
     expect(offsetCallback).not.toHaveBeenCalled()
-    afterRewindTransition(() => {
-      expect(offsetCallback).toHaveBeenCalledWith(move)
+    await afterRewindTransition()
 
-      done()
-    })
+    expect(offsetCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`run.start` should be called with `move` parameter when changing to the first slide', (done) => {
+  test('`run.start` should be called with `move` parameter when changing to the first slide', async () => {
     const glide = new Glide('#glide', { startAt: 1 })
 
     const move = { direction: '<', steps: '<' }
-    const startCallback = jest.fn()
+    const startCallback = vi.fn()
 
     glide.on('run.start', startCallback)
 
     glide.mount().go('<<')
 
     expect(startCallback).not.toHaveBeenCalled()
-    afterTransition(() => {
-      expect(startCallback).toHaveBeenCalledWith(move)
+    await afterTransition()
 
-      done()
-    })
+    expect(startCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`run.end` should be called with `move` parameter when changing to the first slide', (done) => {
+  test('`run.end` should be called with `move` parameter when changing to the first slide', async () => {
     const glide = new Glide('#glide', { startAt: 1 })
 
     const move = { direction: '>', steps: '>' }
-    const endCallback = jest.fn()
+    const endCallback = vi.fn()
 
     glide.on('run.end', endCallback)
 
     glide.mount().go('>>')
 
     expect(endCallback).not.toHaveBeenCalled()
-    afterTransition(() => {
-      expect(endCallback).toHaveBeenCalledWith(move)
+    await afterTransition()
 
-      done()
-    })
+    expect(endCallback).toHaveBeenCalledWith(move)
   })
 
-  test('`autoplay` should be called on each autoplay slide change', (done) => {
+  test('`autoplay` should be called on each autoplay slide change', async () => {
     const glide = new Glide('#glide', { autoplay: 50 })
 
-    const autoplayCallback = jest.fn()
+    const autoplayCallback = vi.fn()
 
     glide.on('autoplay', autoplayCallback)
 
     glide.mount()
 
     expect(autoplayCallback).not.toHaveBeenCalled()
-    setTimeout(() => {
-      expect(autoplayCallback).toHaveBeenCalledTimes(2)
+    await sleep(110)
 
-      done()
-    }, 110)
+    expect(autoplayCallback).toHaveBeenCalledTimes(2)
   })
 
-  test('`translate.jump` should be called when making a loop change', (done) => {
+  test('`translate.jump` should be called when making a loop change', async () => {
     const glide = new Glide('#glide', { type: 'carousel' })
 
-    const jumpCallback = jest.fn()
+    const jumpCallback = vi.fn()
 
     glide.on('translate.jump', jumpCallback)
 
     glide.mount().go('<')
 
     expect(jumpCallback).not.toHaveBeenCalled()
-    afterTransition(() => {
-      expect(jumpCallback).toHaveBeenCalled()
+    await afterTransition()
 
-      done()
-    })
+    expect(jumpCallback).toHaveBeenCalled()
   })
 
-  test('`translate.jump` should be called when making a loop change', (done) => {
+  test('`translate.jump` should be called when making a loop change', async () => {
     const { slides } = query(document)
     const glide = new Glide('#glide', { type: 'carousel', startAt: slides.length - 1 })
 
-    const jumpCallback = jest.fn()
+    const jumpCallback = vi.fn()
 
     glide.on('translate.jump', jumpCallback)
 
     glide.mount().go('>')
 
     expect(jumpCallback).not.toHaveBeenCalled()
-    afterTransition(() => {
-      expect(jumpCallback).toHaveBeenCalled()
+    await afterTransition()
 
-      done()
-    })
+    expect(jumpCallback).toHaveBeenCalled()
   })
 })
