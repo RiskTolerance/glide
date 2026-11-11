@@ -78,25 +78,23 @@ The issue channel is especially for improvement proposals and bug reporting. If 
 
 ## Browser Support
 
-Distributed builds target ES2015, so any browser with full ES2015 support works:
+Glide targets [Baseline Widely Available](https://web.dev/baseline) browsers, the same default as Vite 8:
 
- - Chrome 51+
- - Edge 15+
- - Firefox 54+
- - Opera 38+
- - Safari 10+
- - Safari iOS 10+
-
-Internet Explorer is not supported.
+ - Chrome 111+
+ - Edge 111+
+ - Firefox 114+
+ - Safari 16.4+
+ - Safari iOS 16.4+
 
 ## Building
 
 Build using NPM scripts. The following scripts are available:
-- `build:css` - Outputs CSS files from SASS files.
-- `build:js` - Outputs all destination variants of the script.
+- `build:css` - Outputs prefixed and minified CSS files from the stylesheets in `src/assets/css`.
+- `build:js` - Outputs all destination variants of the script, plus TypeScript declarations for the ES module builds.
 - `build` - Comprehensively builds the entire library.
 - `test` - Runs complete test suite.
-- `lint` - Lints library JavaScript files.
+- `typecheck` - Type-checks the TypeScript sources and tests.
+- `lint` - Lints library TypeScript and CSS files.
 
 ## Credits
 
