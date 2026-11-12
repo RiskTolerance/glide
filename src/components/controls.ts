@@ -48,55 +48,49 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
     },
 
     /**
-     * Sets active class to current slide.
+     * Marks the navigation items of the current slide.
      */
     setActive (): void {
       for (let i = 0; i < navs.length; i++) {
-        this.addClass(navs[i].children)
+        this.setCurrent(navs[i].children)
       }
     },
 
     /**
-     * Removes active class to current slide.
+     * Unmarks the navigation items of the current slide.
      */
     removeActive (): void {
       for (let i = 0; i < navs.length; i++) {
-        this.removeClass(navs[i].children)
+        this.clearCurrent(navs[i].children)
       }
     },
 
     /**
-     * Toggles active class on items inside navigation.
+     * Marks the navigation item of the current slide with `aria-current`.
      */
-    addClass (controls: HTMLCollection): void {
-      const settings = Glide.settings
+    setCurrent (controls: HTMLCollection): void {
       const item = controls[Glide.index]
 
       if (!item) {
         return
       }
 
-      item.classList.add(settings.classes.nav.active)
       item.setAttribute('aria-current', 'true')
 
       siblings(item).forEach(sibling => {
-        sibling.classList.remove(settings.classes.nav.active)
         sibling.removeAttribute('aria-current')
       })
     },
 
     /**
-     * Removes active class from active control.
+     * Removes `aria-current` from the navigation item of the current slide.
      */
-    removeClass (controls: HTMLCollection): void {
-      const item = controls[Glide.index]
-
-      item?.classList.remove(Glide.settings.classes.nav.active)
-      item?.removeAttribute('aria-current')
+    clearCurrent (controls: HTMLCollection): void {
+      controls[Glide.index]?.removeAttribute('aria-current')
     },
 
     /**
-     * Calculates, removes or adds `Glide.settings.classes.disabledArrow` class on the control arrows
+     * Marks the arrows that cannot move further with `aria-disabled`
      */
     setArrowState (): void {
       if (Glide.settings.rewind) {
@@ -118,28 +112,22 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
     },
 
     /**
-     * Removes `Glide.settings.classes.disabledArrow` from given NodeList elements
+     * Removes `aria-disabled` from given NodeList elements
      */
     resetArrowState (...lists: NodeListOf<HTMLElement>[]): void {
-      const settings = Glide.settings
-
       lists.forEach(function (list) {
         list.forEach(function (element) {
-          element.classList.remove(settings.classes.arrow.disabled)
           element.removeAttribute('aria-disabled')
         })
       })
     },
 
     /**
-     * Adds `Glide.settings.classes.disabledArrow` to given NodeList elements
+     * Adds `aria-disabled` to given NodeList elements
      */
     disableArrow (...lists: NodeListOf<HTMLElement>[]): void {
-      const settings = Glide.settings
-
       lists.forEach(function (list) {
         list.forEach(function (element) {
-          element.classList.add(settings.classes.arrow.disabled)
           element.setAttribute('aria-disabled', 'true')
         })
       })
@@ -201,7 +189,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   }
 
   /**
-   * Swap active class of current navigation item:
+   * Mark the current navigation item:
    * - after mounting to set it to initial index
    * - after each move to the new index
    */
@@ -210,14 +198,14 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   })
 
   /**
-   * Add or remove disabled class of arrow elements
+   * Mark arrows that cannot move further as disabled
    */
   Events.on(['mount.after', 'run'], () => {
     Controls.setArrowState()
   })
 
   /**
-   * Remove bindings and HTML Classes:
+   * Remove bindings and attributes:
    * - on destroying, to bring markup to its initial state
    */
   Events.on('destroy', () => {

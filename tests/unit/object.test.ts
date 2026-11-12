@@ -21,70 +21,27 @@ describe('Function', () => {
     })
   })
 
-  test('`mergeOptions` should deep merge classes options object', () => {
+  test('`mergeOptions` should merge breakpoints with the default ones', () => {
     const obj = merge(
       {
-        classes: {
-          direction: {
-            ltr: 'a',
-            rtl: 'a'
-          },
-          type: {
-            slider: 'a',
-            carousel: 'a'
-          },
-          slide: {
-            clone: 'a',
-            active: 'a'
-          },
-          arrow: {
-            disabled: 'a'
-          },
-          nav: {
-            active: 'a'
-          }
+        gap: 10,
+        breakpoints: {
+          600: { perView: 1 },
+          1024: { perView: 2 }
         }
       },
       {
-        classes: {
-          type: {
-            slider: 'b',
-            carousel: 'b'
-          },
-          slide: {
-            clone: 'b',
-            active: 'b'
-          },
-          arrow: {
-            disabled: 'b'
-          },
-          nav: {
-            active: 'b'
-          }
+        breakpoints: {
+          1024: { perView: 3 }
         }
       }
     )
 
     expect(obj).toEqual({
-      classes: {
-        direction: {
-          ltr: 'a',
-          rtl: 'a'
-        },
-        type: {
-          slider: 'b',
-          carousel: 'b'
-        },
-        slide: {
-          clone: 'b',
-          active: 'b'
-        },
-        arrow: {
-          disabled: 'b'
-        },
-        nav: {
-          active: 'b'
-        }
+      gap: 10,
+      breakpoints: {
+        600: { perView: 1 },
+        1024: { perView: 3 }
       }
     })
   })

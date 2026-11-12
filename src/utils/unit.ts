@@ -33,13 +33,6 @@ export function isObject (value: unknown): value is object {
 }
 
 /**
- * Indicates whether the specified value is a number.
- */
-export function isNumber (value: unknown): value is number {
-  return typeof value === 'number'
-}
-
-/**
  * Indicates whether the specified value is a function.
  */
 export function isFunction (value: unknown): value is (...args: any[]) => unknown {

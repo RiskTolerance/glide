@@ -3,7 +3,6 @@ import {
   isArray,
   isString,
   isObject,
-  isNumber,
   isFunction,
   isUndefined
 } from '../../src/utils/unit'
@@ -23,16 +22,6 @@ describe('Function', () => {
     expect(isString([])).toBe(false)
     expect(isString(true)).toBe(false)
     expect(isString(() => {})).toBe(false)
-  })
-
-  test('`isNumber` return `true` on valid number', () => {
-    expect(isNumber(1)).toBe(true)
-
-    expect(isNumber([])).toBe(false)
-    expect(isNumber({})).toBe(false)
-    expect(isNumber(true)).toBe(false)
-    expect(isNumber(() => {})).toBe(false)
-    expect(isNumber('undefined')).toBe(false)
   })
 
   test('`isObject` return `true` on valid object', () => {

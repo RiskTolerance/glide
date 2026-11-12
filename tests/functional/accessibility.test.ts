@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { afterTransition, sleep } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('Accessibility', () => {
@@ -50,6 +49,30 @@ describe('Accessibility', () => {
     })
   })
 
+  describe('clone ids', () => {
+    test('should not be copied, so ids stay unique', () => {
+      const { slides } = query(document)
+
+      slides.forEach((slide, i) => {
+        slide.id = `slide-${i}`
+        slide.innerHTML = `<h3 id="title-${i}">Slide ${i}</h3>`
+      })
+
+      const glide = new Glide('#glide', { type: 'carousel' }).mount()
+      const { clones } = query(document)
+
+      clones.forEach((clone) => {
+        expect(clone.hasAttribute('id')).toBe(false)
+        expect(clone.querySelectorAll('[id]')).toHaveLength(0)
+      })
+
+      expect(document.querySelectorAll('[id^="slide-"]')).toHaveLength(slides.length)
+      expect(document.querySelectorAll('[id^="title-"]')).toHaveLength(slides.length)
+
+      glide.destroy()
+    })
+  })
+
   describe('arrows', () => {
     test('disabled arrows should be marked `aria-disabled`', () => {
       const { previousControls, nextControls } = query(document)
@@ -78,7 +101,6 @@ describe('Accessibility', () => {
 
       previousControls.forEach((control) => {
         expect(control.hasAttribute('aria-disabled')).toBe(false)
-        expect(control.classList.contains(defaults.classes.arrow.disabled)).toBe(false)
       })
     })
   })
@@ -87,7 +109,7 @@ describe('Accessibility', () => {
     test('the active bullet should be marked `aria-current`', async () => {
       const { bullets, root } = query(document)
 
-      root.querySelector('.glide__bullets')?.setAttribute('data-glide-el', 'controls[nav]')
+      root.querySelector('.glide-bullets')?.setAttribute('data-glide-el', 'controls[nav]')
 
       const glide = new Glide('#glide').mount()
 
@@ -130,7 +152,7 @@ describe('Accessibility', () => {
 
       await sleep(10)
 
-      expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+      expect(slides[1].hasAttribute('data-active')).toBe(true)
 
       glide.destroy()
     })

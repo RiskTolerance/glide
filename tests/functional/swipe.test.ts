@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { nextFrame } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 interface PointerInit {
@@ -32,7 +31,7 @@ describe('Swipe', () => {
 
     await nextFrame()
 
-    expect(root.classList.contains(defaults.classes.dragging)).toBe(true)
+    expect(root.hasAttribute('data-dragging')).toBe(true)
 
     pointer(wrapper, 'pointerup', { x: 100, y: 40 })
     glide.destroy()
@@ -48,7 +47,7 @@ describe('Swipe', () => {
 
     await nextFrame()
 
-    expect(root.classList.contains(defaults.classes.dragging)).toBe(false)
+    expect(root.hasAttribute('data-dragging')).toBe(false)
 
     pointer(wrapper, 'pointerup', { x: 40, y: 100 })
     glide.destroy()

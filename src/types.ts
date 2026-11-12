@@ -36,17 +36,6 @@ export type GlideDirection = 'ltr' | 'rtl'
  */
 export type GlidePeek = number | string | { before: number | string, after: number | string }
 
-/** HTML classes Glide applies to its elements. */
-export interface GlideClasses {
-  swipeable: string
-  dragging: string
-  direction: { ltr: string, rtl: string }
-  type: { slider: string, carousel: string }
-  slide: { clone: string, active: string }
-  arrow: { disabled: string }
-  nav: { active: string }
-}
-
 /** Settings applied below a viewport width (in pixels), keyed by that width. */
 export type GlideBreakpoints = Record<number, GlideOptions>
 
@@ -76,15 +65,19 @@ export interface GlideSettings {
   peek: GlidePeek
   cloningRatio: number
   breakpoints: GlideBreakpoints
-  classes: GlideClasses
 }
 
 /** Options accepted by `new Glide()` and `glide.update()`. Every setting is optional. */
-export interface GlideOptions extends Partial<Omit<GlideSettings, 'classes'>> {
-  classes?: {
-    [K in keyof GlideClasses]?: GlideClasses[K] extends string ? string : Partial<GlideClasses[K]>
-  }
-}
+export type GlideOptions = Partial<GlideSettings>
+
+/**
+ * Movement pattern accepted by `glide.go()`:
+ * - `>` / `<` move one slide forward / backward
+ * - `>>` / `<<` rewind to the last / first slide
+ * - `|>` / `|<` move one viewport forward / backward
+ * - `={i}` go to the zero-based slide `i`, e.g. `=2`
+ */
+export type GlidePattern = '>' | '<' | '>>' | '<<' | '|>' | '|<' | `=${number}`
 
 /** A parsed movement pattern such as `>`, `<<`, `=2` or `|>`. */
 export interface MoveSchema {

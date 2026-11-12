@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { afterTransition, sleep } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('Glide initialized with `autoplay`', () => {
@@ -19,8 +18,8 @@ describe('Glide initialized with `autoplay`', () => {
     await afterTransition()
 
     expect(glide.index).toBe(1)
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
-    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(false)
+    expect(slides[1].hasAttribute('data-active')).toBe(true)
   })
 
   test('as `false` should not move to the next slide', async () => {
@@ -32,7 +31,7 @@ describe('Glide initialized with `autoplay`', () => {
     await afterTransition()
 
     expect(glide.index).toBe(0)
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
-    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(false)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
+    expect(slides[1].hasAttribute('data-active')).toBe(false)
   })
 })

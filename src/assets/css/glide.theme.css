@@ -1,16 +1,23 @@
-.glide__arrow {
+/*
+ * Colors can be changed with custom properties, set on any ancestor:
+ * --glide-control-color: arrow text and hover border, active bullet (white)
+ * --glide-control-muted-color: arrow border, bullets (white at 50%)
+ * --glide-control-shadow-color: arrow and bullet shadows (black at 10%)
+ */
+
+.glide-arrow {
   position: absolute;
   display: block;
   top: 50%;
   z-index: 2;
-  color: white;
+  color: var(--glide-control-color, white);
   text-transform: uppercase;
   padding: 9px 12px;
   background-color: transparent;
-  border: 2px solid rgb(255 255 255 / 50%);
+  border: 2px solid var(--glide-control-muted-color, rgb(255 255 255 / 50%));
   border-radius: 4px;
-  box-shadow: 0 0.25em 0.5em 0 rgb(0 0 0 / 10%);
-  text-shadow: 0 0.25em 0.5em rgb(0 0 0 / 10%);
+  box-shadow: 0 0.25em 0.5em 0 var(--glide-control-shadow-color, rgb(0 0 0 / 10%));
+  text-shadow: 0 0.25em 0.5em var(--glide-control-shadow-color, rgb(0 0 0 / 10%));
   opacity: 1;
   cursor: pointer;
   transition: opacity 150ms ease, border 300ms ease-in-out;
@@ -18,27 +25,27 @@
   line-height: 1;
 }
 
-.glide__arrow:focus {
+.glide-arrow:focus {
   outline: none;
 }
 
-.glide__arrow:hover {
-  border-color: white;
+.glide-arrow:hover {
+  border-color: var(--glide-control-color, white);
 }
 
-.glide__arrow--left {
+.glide-arrow[data-glide-dir$="<"] {
   left: 2em;
 }
 
-.glide__arrow--right {
+.glide-arrow[data-glide-dir$=">"] {
   right: 2em;
 }
 
-.glide__arrow--disabled {
+.glide-arrow[aria-disabled="true"] {
   opacity: 0.33;
 }
 
-.glide__bullets {
+.glide-bullets {
   position: absolute;
   z-index: 2;
   bottom: 2em;
@@ -48,8 +55,8 @@
   transform: translateX(-50%);
 }
 
-.glide__bullet {
-  background-color: rgb(255 255 255 / 50%);
+.glide-bullet {
+  background-color: var(--glide-control-muted-color, rgb(255 255 255 / 50%));
   width: 9px;
   height: 9px;
   padding: 0;
@@ -58,28 +65,28 @@
   transition: all 300ms ease-in-out;
   cursor: pointer;
   line-height: 0;
-  box-shadow: 0 0.25em 0.5em 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 0.25em 0.5em 0 var(--glide-control-shadow-color, rgb(0 0 0 / 10%));
   margin: 0 0.25em;
 }
 
-.glide__bullet:focus {
+.glide-bullet[aria-current="true"] {
+  background-color: var(--glide-control-color, white);
+}
+
+.glide-bullet:focus {
   outline: none;
 }
 
-.glide__bullet:hover,
-.glide__bullet:focus {
-  border: 2px solid white;
-  background-color: rgb(255 255 255 / 50%);
+.glide-bullet:hover,
+.glide-bullet:focus {
+  border: 2px solid var(--glide-control-color, white);
+  background-color: var(--glide-control-muted-color, rgb(255 255 255 / 50%));
 }
 
-.glide__bullet--active {
-  background-color: white;
-}
-
-.glide--swipeable {
+.glide[data-swipeable] {
   cursor: grab;
 }
 
-.glide--dragging {
+.glide[data-dragging] {
   cursor: grabbing;
 }

@@ -1,7 +1,7 @@
 import { warn } from '../utils/log'
 import { throttle } from '../utils/wait'
 import { isObject } from '../utils/unit'
-import { sortKeys, mergeOptions } from '../utils/object'
+import { mergeOptions } from '../utils/object'
 import type Glide from '../index'
 import type EventsBus from '../core/event/events-bus'
 import type { Components, GlideOptions, GlideSettings } from '../types'
@@ -11,14 +11,16 @@ import EventsBinder from '../core/event/events-binder'
 type Points = Record<string, GlideOptions>
 
 /**
- * Sorts keys of breakpoint object so they will be ordered from lower to bigger.
+ * Checks the breakpoints option. Its keys are widths such as `800`, and
+ * integer keys are always enumerated in ascending order, so the smallest
+ * matching breakpoint is found first without sorting.
  */
-function sortBreakpoints (points: Points): Points {
+function validBreakpoints (points: Points): Points {
   if (isObject(points)) {
-    return sortKeys(points)
-  } else {
-    warn('Breakpoints option must be an object')
+    return points
   }
+
+  warn('Breakpoints option must be an object')
 
   return {}
 }
@@ -36,11 +38,9 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   let base: GlideSettings = Object.assign({}, Glide.settings)
 
   /**
-   * Holds reference to breakpoints object in settings. Sorts breakpoints
-   * from smaller to larger. It is required in order to proper
-   * matching currently active breakpoint settings.
+   * Holds reference to breakpoints object in settings.
    */
-  let points = sortBreakpoints(base.breakpoints as Points)
+  let points = validBreakpoints(base.breakpoints as Points)
 
   /**
    * Breakpoint currently applied, if any.
@@ -122,7 +122,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
    */
   Events.on('update', (options) => {
     base = mergeOptions(base, options)
-    points = sortBreakpoints(base.breakpoints as Points)
+    points = validBreakpoints(base.breakpoints as Points)
 
     if (Object.hasOwn(options, 'breakpoints')) {
       stale = true

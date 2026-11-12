@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { afterTransition, sleep } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('After destroying an instance', () => {
@@ -10,45 +9,23 @@ describe('After destroying an instance', () => {
     document.body.innerHTML = html
   })
 
-  test('`classes.type.slider` should not be applied on the root element', () => {
+  test('the root element should not keep its state attributes', () => {
     const { root } = query(document)
 
-    new Glide('#glide').mount().destroy()
+    new Glide('#glide', { type: 'carousel', direction: 'rtl' }).mount().destroy()
 
-    expect(root.classList.contains(defaults.classes.type.slider)).toBe(false)
+    for (const name of ['data-type', 'data-direction', 'data-swipeable', 'data-dragging']) {
+      expect(root.hasAttribute(name)).toBe(false)
+    }
   })
 
-  test('`classes.type.carousel` should not be applied on the root element', () => {
-    const { root } = query(document)
-
-    new Glide('#glide', { type: 'carousel' }).mount().destroy()
-
-    expect(root.classList.contains(defaults.classes.type.carousel)).toBe(false)
-  })
-
-  test('`classes.direction.ltr` should not be applied on the root element', () => {
-    const { root } = query(document)
-
-    new Glide('#glide').mount().destroy()
-
-    expect(root.classList.contains(defaults.classes.direction.ltr)).toBe(false)
-  })
-
-  test('`classes.direction.rtl` should not be applied on the root element', () => {
-    const { root } = query(document)
-
-    new Glide('#glide', { direction: 'rtl' }).mount().destroy()
-
-    expect(root.classList.contains(defaults.classes.direction.rtl)).toBe(false)
-  })
-
-  test('`classes.slide.active` should not be applied on any slide elements', () => {
+  test('no slide element should stay marked `data-active`', () => {
     const { slides } = query(document)
 
     new Glide('#glide').mount().destroy()
 
     for (let i = 0; i < slides.length; i++) {
-      expect(slides[i].classList.contains(defaults.classes.slide.active)).toBe(false)
+      expect(slides[i].hasAttribute('data-active')).toBe(false)
     }
   })
 
@@ -66,7 +43,7 @@ describe('After destroying an instance', () => {
     expect(wrapper.style.gap).toBe('')
   })
 
-  test('an in-flight move should not reapply classes after destroying', async () => {
+  test('an in-flight move should not mark a slide active after destroying', async () => {
     const { slides } = query(document)
     const glide = new Glide('#glide').mount()
 
@@ -76,7 +53,7 @@ describe('After destroying an instance', () => {
     await afterTransition()
 
     for (let i = 0; i < slides.length; i++) {
-      expect(slides[i].classList.contains(defaults.classes.slide.active)).toBe(false)
+      expect(slides[i].hasAttribute('data-active')).toBe(false)
     }
 
     expect(glide.disabled).toBe(false)

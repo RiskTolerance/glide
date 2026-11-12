@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { afterTransition } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('Glide initialized as `slider`', () => {
@@ -25,8 +24,8 @@ describe('Glide initialized as `slider`', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(false)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
   })
 
   test('should move to the first slide when we are on the last slide and moving forward', async () => {
@@ -38,8 +37,8 @@ describe('Glide initialized as `slider`', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(false)
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(false)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('should NOT move to the last slide when we are on the first slide and rewind set to false', async () => {
@@ -51,8 +50,8 @@ describe('Glide initialized as `slider`', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(false)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(false)
   })
 
   test('should NOT move to the first slide when we are on the last slide and rewind set to false', async () => {
@@ -64,8 +63,8 @@ describe('Glide initialized as `slider`', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(false)
   })
 
   test('should STOP move at `perView` number of slides from the end when `bound` option is `true`', async () => {
@@ -79,6 +78,6 @@ describe('Glide initialized as `slider`', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - perView].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - perView].hasAttribute('data-active')).toBe(true)
   })
 })

@@ -1,4 +1,8 @@
-# This workflow will run tests using node and then publish a package to NPM when a release is created
+# Runs the checks and publishes the package to npm when a version tag is pushed.
+#
+# Uses npm trusted publishing (OIDC): no npm token is stored in the repository.
+# On npmjs.com, add a trusted publisher to the package with this repository
+# and the workflow filename `npm-publish.yml`.
 
 name: Publish to NPM
 
@@ -7,20 +11,12 @@ on:
     tags: [ 'v*.*.*' ]
   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+permissions:
+  contents: read
+  id-token: write # lets npm verify this workflow and attach provenance
 
-  publish-npm:
-    needs: build
+jobs:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -28,8 +24,10 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org/
+          package-manager-cache: false # never cache dependencies in release builds
       - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
       - run: npm run build
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: npm publish --access public

@@ -11,6 +11,7 @@ import type {
   Extensions,
   GlideEventMap,
   GlideOptions,
+  GlidePattern,
   GlideSettings,
   GlideType,
   TransformerFactory
@@ -106,7 +107,7 @@ export default class Glide {
    * `|>` - Move one viewport forward
    * `|<` - Move one viewport backward
    */
-  go (pattern: string): this {
+  go (pattern: GlidePattern): this {
     this._c.Run.make(pattern)
 
     return this

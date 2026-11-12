@@ -24,9 +24,20 @@ const FOCUSABLE_SELECTOR = [
  * Hides a clone from assistive technology and takes its focusable content
  * out of the tab order, so its content is not announced or reached twice.
  * Clones stay clickable, as they can be visible at the edges of the track.
+ * Ids are removed so they stay unique in the document, and a clone of the
+ * active slide does not keep its active state.
  */
 function hide (clone: HTMLElement): void {
+  clone.setAttribute('data-clone', '')
   clone.setAttribute('aria-hidden', 'true')
+  clone.removeAttribute('data-active')
+  clone.removeAttribute('id')
+
+  const identified = clone.querySelectorAll('[id]')
+
+  for (let i = 0; i < identified.length; i++) {
+    identified[i].removeAttribute('id')
+  }
 
   if (clone.matches(FOCUSABLE_SELECTOR)) {
     clone.setAttribute('tabindex', '-1')
@@ -40,6 +51,20 @@ function hide (clone: HTMLElement): void {
 }
 
 export default function (Glide: Glide, Components: Components, Events: EventsBus) {
+  /**
+   * Settings that decide which clones are needed, as of the last mount.
+   */
+  let pattern: string
+
+  /**
+   * Describes the settings that decide the number of clones.
+   */
+  function describePattern (): string {
+    const { type, perView, peek, cloningRatio } = Glide.settings
+
+    return [type, perView, !!peek, cloningRatio, Components.Html.slides.length].join('|')
+  }
+
   const Clones = {
     /**
      * Cloned slides, prepended and appended around the originals.
@@ -51,6 +76,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
      */
     mount (): void {
       this.items = []
+      pattern = describePattern()
 
       if (Glide.isType('carousel')) {
         this.items = this.collect()
@@ -62,7 +88,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
      */
     collect (items: HTMLElement[] = []): HTMLElement[] {
       const { slides } = Components.Html
-      const { perView, classes, cloningRatio } = Glide.settings
+      const { perView, cloningRatio } = Glide.settings
 
       if (slides.length > 0) {
         const peekIncrementer = +!!Glide.settings.peek
@@ -74,7 +100,6 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
           for (let i = 0; i < append.length; i++) {
             const clone = append[i].cloneNode(true) as HTMLElement
 
-            clone.classList.add(classes.slide.clone)
             hide(clone)
 
             items.push(clone)
@@ -83,7 +108,6 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
           for (let i = 0; i < prepend.length; i++) {
             const clone = prepend[i].cloneNode(true) as HTMLElement
 
-            clone.classList.add(classes.slide.clone)
             hide(clone)
 
             items.unshift(clone)
@@ -139,13 +163,26 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   }
 
   /**
-   * Append additional slide's clones:
-   * - while glide's type is `carousel`
+   * Recreate slide's clones:
+   * - on updating via API, as slides or options may have changed
    */
   Events.on('update', () => {
     Clones.remove()
     Clones.mount()
     Clones.append()
+  })
+
+  /**
+   * Recreate slide's clones only when a different number is needed:
+   * - on resizing, when a breakpoint changed `type`, `perView`, `peek` or `cloningRatio`.
+   *   A change in width alone keeps the existing clones.
+   */
+  Events.on('resize', () => {
+    if (describePattern() !== pattern) {
+      Clones.remove()
+      Clones.mount()
+      Clones.append()
+    }
   })
 
   /**

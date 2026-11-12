@@ -152,35 +152,7 @@ const defaults: GlideSettings = {
    *   }
    * }`
    */
-  breakpoints: {},
-
-  /**
-   * Collection of internally used HTML classes.
-   *
-   * @todo Refactor `slider` and `carousel` properties to single `type: { slider: '', carousel: '' }` object
-   */
-  classes: {
-    swipeable: 'glide--swipeable',
-    dragging: 'glide--dragging',
-    direction: {
-      ltr: 'glide--ltr',
-      rtl: 'glide--rtl'
-    },
-    type: {
-      slider: 'glide--slider',
-      carousel: 'glide--carousel'
-    },
-    slide: {
-      clone: 'glide__slide--clone',
-      active: 'glide__slide--active'
-    },
-    arrow: {
-      disabled: 'glide__arrow--disabled'
-    },
-    nav: {
-      active: 'glide__bullet--active'
-    }
-  }
+  breakpoints: {}
 }
 
 export default defaults

@@ -1,5 +1,4 @@
 const ROOT_SELECTOR = '.glide'
-const CLONE_CLASS = 'glide__slide--clone'
 const TRACK_SELECTOR = '[data-glide-el="track"]'
 const BULLETS_SELECTOR = '[data-glide-dir*="="]'
 const PREVIOUS_CONTROLS_SELECTOR = '[data-glide-dir*="<"]'
@@ -14,10 +13,10 @@ export function query (document: Document) {
   const previousControls = root.querySelectorAll<HTMLElement>(PREVIOUS_CONTROLS_SELECTOR)
   const nextControls = root.querySelectorAll<HTMLElement>(NEXT_CONTROLS_SELECTOR)
   const slides = (Array.from(wrapper.children) as HTMLElement[]).filter((slide) => {
-    return !slide.classList.contains(CLONE_CLASS)
+    return !slide.hasAttribute('data-clone')
   })
   const clones = (Array.from(wrapper.children) as HTMLElement[]).filter((slide) => {
-    return slide.classList.contains(CLONE_CLASS)
+    return slide.hasAttribute('data-clone')
   })
 
   return {

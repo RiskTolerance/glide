@@ -31,13 +31,13 @@ describe('Calling `update()` method with', () => {
     glide.update({ startAt: 1 })
 
     expect(glide.index).toBe(1)
-    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[1].hasAttribute('data-active')).toBe(true)
   })
 
   test('additional slide should be updated', () => {
     const { wrapper } = query(document)
     const newSlide = document.createElement('li')
-    newSlide.className = 'glide__slide'
+    newSlide.className = 'glide-slide'
     newSlide.innerHTML = '0'
 
     const glide = new Glide('#glide', { startAt: 0 }).mount()

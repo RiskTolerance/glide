@@ -6,62 +6,59 @@ import type { Components } from '../types'
 export default function (Glide: Glide, Components: Components, Events: EventsBus) {
   const Build = {
     /**
-     * Init glide building. Adds classes, sets
+     * Init glide building. Marks elements, sets
      * dimensions and setups initial state.
      */
     mount (): void {
       Events.emit('build.before')
 
-      this.typeClass()
-      this.activeClass()
+      this.markType()
+      this.markActive()
 
       Events.emit('build.after')
     },
 
     /**
-     * Adds `type` class to the glide element.
+     * Marks the root element with the slider type (`data-type`).
      */
-    typeClass (): void {
-      Components.Html.root.classList.add(Glide.settings.classes.type[Glide.settings.type])
+    markType (): void {
+      Components.Html.root.setAttribute('data-type', Glide.settings.type)
     },
 
     /**
-     * Sets active class to current slide.
+     * Marks the current slide as active (`data-active`).
      */
-    activeClass (): void {
-      const classes = Glide.settings.classes
+    markActive (): void {
       const slide = Components.Html.slides[Glide.index]
 
       if (slide) {
-        slide.classList.add(classes.slide.active)
+        slide.setAttribute('data-active', '')
 
         siblings(slide).forEach((sibling) => {
-          sibling.classList.remove(classes.slide.active)
+          sibling.removeAttribute('data-active')
         })
       }
     },
 
     /**
-     * Removes HTML classes applied at building.
+     * Removes the attributes applied at building.
      */
-    removeClasses (): void {
-      const { type, slide } = Glide.settings.classes
+    unmark (): void {
+      Components.Html.root.removeAttribute('data-type')
 
-      Components.Html.root.classList.remove(type[Glide.settings.type])
-
-      Components.Html.slides.forEach((sibling) => {
-        sibling.classList.remove(slide.active)
+      Components.Html.slides.forEach((slide) => {
+        slide.removeAttribute('data-active')
       })
     }
   }
 
   /**
-   * Clear building classes:
+   * Clear building attributes:
    * - on destroying to bring HTML to its initial state
-   * - on updating to remove classes before remounting component
+   * - on updating to remove them before remounting component
    */
   Events.on(['destroy', 'update'], () => {
-    Build.removeClasses()
+    Build.unmark()
   })
 
   /**
@@ -74,11 +71,11 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   })
 
   /**
-   * Swap active class of current slide:
+   * Mark the new active slide:
    * - after each move to the new index
    */
   Events.on('move.after', () => {
-    Build.activeClass()
+    Build.markActive()
   })
 
   return Build

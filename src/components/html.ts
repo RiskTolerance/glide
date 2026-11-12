@@ -30,7 +30,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
      */
     collectSlides (): void {
       this.slides = Array.from(this.wrapper.children as HTMLCollectionOf<HTMLElement>).filter((slide) => {
-        return !slide.classList.contains(Glide.settings.classes.slide.clone)
+        return !slide.hasAttribute('data-clone')
       })
     },
 

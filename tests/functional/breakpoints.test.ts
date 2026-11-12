@@ -118,4 +118,53 @@ describe('Breakpoints', () => {
 
     glide.destroy()
   })
+
+  test('a carousel should rebuild its clones when a breakpoint changes `perView`', async () => {
+    const clones = (): number => document.querySelectorAll('[data-clone]').length
+
+    viewport = 600
+
+    const glide = new Glide('#glide', { type: 'carousel', perView: 3, breakpoints: { 800: { perView: 1 } } }).mount()
+
+    expect(clones()).toBe(4)
+
+    await sleep(20)
+    resizeTo(1024)
+
+    expect(clones()).toBe(10)
+
+    await sleep(20)
+    resizeTo(600)
+
+    expect(clones()).toBe(4)
+
+    glide.destroy()
+
+    expect(clones()).toBe(0)
+  })
+
+  test('should apply the smallest matching breakpoint, in any order', async () => {
+    viewport = 500
+
+    const glide = new Glide('#glide', { perView: 4, breakpoints: { 1200: { perView: 3 }, 600: { perView: 1 }, 900: { perView: 2 } } }).mount()
+
+    expect(glide.settings.perView).toBe(1)
+
+    await sleep(20)
+    resizeTo(800)
+
+    expect(glide.settings.perView).toBe(2)
+
+    await sleep(20)
+    resizeTo(1000)
+
+    expect(glide.settings.perView).toBe(3)
+
+    await sleep(20)
+    resizeTo(1400)
+
+    expect(glide.settings.perView).toBe(4)
+
+    glide.destroy()
+  })
 })

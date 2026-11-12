@@ -39,17 +39,17 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
     },
 
     /**
-     * Applies direction class to the root HTML element.
+     * Marks the root element with the direction (`data-direction`).
      */
-    addClass (): void {
-      Components.Html.root.classList.add(Glide.settings.classes.direction[this.value])
+    mark (): void {
+      Components.Html.root.setAttribute('data-direction', this.value)
     },
 
     /**
-     * Removes direction class from the root HTML element.
+     * Removes the direction from the root element.
      */
-    removeClass (): void {
-      Components.Html.root.classList.remove(Glide.settings.classes.direction[this.value])
+    unmark (): void {
+      Components.Html.root.removeAttribute('data-direction')
     },
 
     /**
@@ -72,12 +72,12 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   }
 
   /**
-   * Clear direction class:
+   * Clear direction attribute:
    * - on destroy to bring HTML to its initial state
-   * - on update to remove class before reappling bellow
+   * - on update to remove it before reappling bellow
    */
   Events.on(['destroy', 'update'], () => {
-    Direction.removeClass()
+    Direction.unmark()
   })
 
   /**
@@ -89,12 +89,12 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   })
 
   /**
-   * Apply direction class:
-   * - before building to apply class for the first time
-   * - on updating to reapply direction class that may changed
+   * Apply direction attribute:
+   * - before building to apply it for the first time
+   * - on updating to reapply a direction that may have changed
    */
   Events.on(['build.before', 'update'], () => {
-    Direction.addClass()
+    Direction.mark()
   })
 
   return Direction

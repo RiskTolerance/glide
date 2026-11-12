@@ -1,8 +1,8 @@
 import html from '../fixtures/html'
 import { query } from '../fixtures/query'
+import { resizeElement } from '../fixtures/resize-observer'
 import { afterTransition } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('Glide initialized as `carousel`', () => {
@@ -28,8 +28,8 @@ describe('Glide initialized as `carousel`', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(false)
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(false)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
   })
 
   test('should go to the first slide when we are on the last slide and moving forward', async () => {
@@ -44,8 +44,8 @@ describe('Glide initialized as `carousel`', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(false)
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(false)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('with odd number of `perView` slides should create sufficient cloning buffer', async () => {
@@ -95,5 +95,19 @@ describe('Glide initialized as `carousel`', () => {
     const { clones } = query(document)
 
     expect(clones.length).toBe(12)
+  })
+
+  test('a width change should keep the same clones', () => {
+    const glide = new Glide('#glide', { type: 'carousel', perView: 3 }).mount()
+    const { track, clones } = query(document)
+
+    resizeElement(track, 900)
+
+    expect(query(document).clones).toEqual(clones)
+    query(document).clones.forEach((clone, i) => {
+      expect(clone).toBe(clones[i])
+    })
+
+    glide.destroy()
   })
 })

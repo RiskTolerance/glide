@@ -2,7 +2,6 @@ import html from '../fixtures/html'
 import { query } from '../fixtures/query'
 import { afterTransition } from '../fixtures/transition'
 
-import defaults from '../../src/defaults'
 import Glide from '../../entry/entry-complete'
 
 describe('Calling `go()` method with', () => {
@@ -16,7 +15,8 @@ describe('Calling `go()` method with', () => {
 
     vi.spyOn(console, 'error').mockImplementation(fn)
 
-    glide.mount().go('??')
+    // Deliberately invalid pattern
+    glide.mount().go('??' as never)
 
     await afterTransition()
 
@@ -34,7 +34,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[1].hasAttribute('data-active')).toBe(true)
   })
 
   test('go() should not wait for transition when configured', async () => {
@@ -48,7 +48,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[3].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[3].hasAttribute('data-active')).toBe(true)
   })
 
   test('`>` should move one slide forward', async () => {
@@ -60,7 +60,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[1].hasAttribute('data-active')).toBe(true)
   })
 
   test('`<` should move one slide backward', async () => {
@@ -72,7 +72,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`>>` should rewind to the last slide', async () => {
@@ -84,7 +84,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
   })
 
   test('`<<` should rewind to the first slide', async () => {
@@ -96,7 +96,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`={i}` should move to specified slide', async () => {
@@ -108,7 +108,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[2].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[2].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|>` should go to the next viewport', async () => {
@@ -120,7 +120,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[3].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[3].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|>` should go to the next viewport when active slide is not first on current viewport', async () => {
@@ -132,7 +132,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[3].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[3].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|<` should go to the previous viewport', async () => {
@@ -144,7 +144,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|<` should go to the previous viewport when active slide is not first on current viewport', async () => {
@@ -156,7 +156,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|>` should not change viewport when rewind is disabled, moving forward and we on the last viewport', async () => {
@@ -172,7 +172,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|<` should not change viewport when rewind is disabled, moving backward and we on the first viewport', async () => {
@@ -188,7 +188,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|>` should change to the first viewport when moving forward and we are on the last vievport', async () => {
@@ -203,7 +203,7 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[0].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[0].hasAttribute('data-active')).toBe(true)
   })
 
   test('`|<` should change to the last viewport when moving backward and we are on the first vievport', async () => {
@@ -218,6 +218,6 @@ describe('Calling `go()` method with', () => {
 
     await afterTransition()
 
-    expect(slides[slides.length - 1].classList.contains(defaults.classes.slide.active)).toBe(true)
+    expect(slides[slides.length - 1].hasAttribute('data-active')).toBe(true)
   })
 })

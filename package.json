@@ -5,10 +5,16 @@
   "description": "Glide.js is a dependency-free JavaScript ES6 slider and carousel. It’s lightweight, flexible and fast. Designed to slide. No less, no more",
   "author": "Jędrzej Chałubek (https://github.com/jedrzejchalubek/)",
   "homepage": "https://glidejs.com",
-  "main": "dist/glide.js",
+  "main": "dist/glide.esm.js",
   "module": "dist/glide.esm.js",
   "unpkg": "dist/glide.js",
   "types": "dist/glide.esm.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/glidejs/glide.git"
@@ -34,13 +40,12 @@
     "build": "npm run build:css && npm run build:js",
     "test": "vitest run",
     "typecheck": "tsc",
-    "lint": "eslint src entry tests *.config.js && stylelint \"src/**/*.css\""
+    "lint": "oxlint src entry tests *.config.js && stylelint \"src/**/*.css\"",
+    "prepublishOnly": "npm run build"
   },
   "exports": {
     ".": {
       "types": "./dist/glide.esm.d.ts",
-      "import": "./dist/glide.esm.js",
-      "require": "./dist/glide.js",
       "default": "./dist/glide.esm.js"
     },
     "./dist/*": "./dist/*"
@@ -54,15 +59,15 @@
     "ios_saf >= 16.4"
   ],
   "devDependencies": {
-    "eslint": "^10.14.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "jsdom": "^31.0.0",
     "lightningcss-cli": "^1.33.0",
-    "neostandard": "^0.14.1",
+    "oxlint": "^1.93.0",
     "rolldown": "^1.3.2",
     "rolldown-plugin-dts": "^0.30.2",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^5.1.0"
   }
 }

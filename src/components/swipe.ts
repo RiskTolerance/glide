@@ -126,7 +126,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
 
         Components.Move.make(dragOffset)
 
-        Components.Html.root.classList.add(Glide.settings.classes.dragging)
+        Components.Html.root.setAttribute('data-dragging', '')
 
         Events.emit('swipe.move')
       })
@@ -142,7 +142,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
       }
 
       if (!Glide.disabled) {
-        const { perSwipe, touchAngle, classes } = Glide.settings
+        const { perSwipe, touchAngle } = Glide.settings
 
         const threshold = Number(this.threshold(event))
 
@@ -162,7 +162,7 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
           Components.Move.make()
         }
 
-        Components.Html.root.classList.remove(classes.dragging)
+        Components.Html.root.removeAttribute('data-dragging')
 
         this.unbindSwipeMove()
         this.unbindSwipeEnd()
@@ -284,11 +284,11 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
   }
 
   /**
-   * Add component class:
+   * Mark the root element as swipeable (`data-swipeable`):
    * - after initial building
    */
   Events.on('build.after', () => {
-    Components.Html.root.classList.add(Glide.settings.classes.swipeable)
+    Components.Html.root.setAttribute('data-swipeable', '')
   })
 
   /**
@@ -300,6 +300,9 @@ export default function (Glide: Glide, Components: Components, Events: EventsBus
     Swipe.unbindSwipeMove()
     Swipe.unbindSwipeEnd()
     Binder.destroy()
+
+    Components.Html.root.removeAttribute('data-swipeable')
+    Components.Html.root.removeAttribute('data-dragging')
   })
 
   return Swipe

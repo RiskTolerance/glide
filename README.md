@@ -46,11 +46,11 @@ npm install @glidejs/glide
 
 ```html
 <div class="glide">
-  <div data-glide-el="track" class="glide__track">
-    <ul class="glide__slides">
-      <li class="glide__slide"></li>
-      <li class="glide__slide"></li>
-      <li class="glide__slide"></li>
+  <div data-glide-el="track" class="glide-track">
+    <ul class="glide-slides">
+      <li class="glide-slide"></li>
+      <li class="glide-slide"></li>
+      <li class="glide-slide"></li>
     </ul>
   </div>
 </div>
@@ -75,6 +75,40 @@ new Glide('.glide').mount({ Controls, Breakpoints })
 ## Contributing
 
 The issue channel is especially for improvement proposals and bug reporting. If you have implementing problems, please write on StackOverflow with [glidejs](https://stackoverflow.com/questions/tagged/glidejs) tag.
+
+## Theming
+
+The optional theme stylesheet (`glide.theme.css`) reads its colors from custom properties. Set them on any ancestor of the slider, or on `:root`:
+
+```css
+.glide {
+  --glide-control-color: #222;               /* arrow text and hover border, active bullet (default: white) */
+  --glide-control-muted-color: #2228;        /* arrow border, bullets (default: white at 50%) */
+  --glide-control-shadow-color: transparent; /* arrow and bullet shadows (default: black at 10%) */
+}
+```
+
+The theme places each `.glide-arrow` by its `data-glide-dir`: a direction ending in `<` on the left, one ending in `>` on the right.
+
+### States
+
+Glide marks state with attributes rather than classes, so style them with attribute selectors:
+
+| Attribute | Element | Meaning |
+| --- | --- | --- |
+| `data-type="slider\|carousel"` | root | The `type` option |
+| `data-direction="ltr\|rtl"` | root | The `direction` option |
+| `data-swipeable` | root | The Swipe component is mounted |
+| `data-dragging` | root | A swipe or drag is in progress |
+| `data-active` | slide | The current slide |
+| `data-clone` | slide | A copy added by the `carousel` type |
+| `aria-current="true"` | bullet | The bullet of the current slide |
+| `aria-disabled="true"` | arrow | The arrow cannot move further (`rewind: false`) |
+
+```css
+.glide-slide[data-active] { outline: 2px solid; }
+.glide-arrow[aria-disabled="true"] { visibility: hidden; }
+```
 
 ## Browser Support
 

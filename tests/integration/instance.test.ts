@@ -30,22 +30,12 @@ describe('Glide', () => {
   test('modified settings should return defaults extended by options', () => {
     const glide = new Glide('#glide', {
       startAt: 2,
-      classes: {
-        direction: {
-          ltr: 'one',
-          rtl: 'two'
-        }
-      }
+      gap: 20
     }).mount()
 
     expect(glide.settings).toEqual(mergeOptions(defaults, {
       startAt: 2,
-      classes: {
-        direction: {
-          ltr: 'one',
-          rtl: 'two'
-        }
-      }
+      gap: 20
     }))
   })
 
